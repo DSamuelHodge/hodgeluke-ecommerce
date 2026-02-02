@@ -1,4 +1,3 @@
-import { slugField } from 'payload'
 import type { CollectionConfig } from 'payload'
 
 export const Categories: CollectionConfig = {
@@ -16,8 +15,27 @@ export const Categories: CollectionConfig = {
       type: 'text',
       required: true,
     },
-    slugField({
-      position: undefined,
-    }),
+    {
+      name: 'slug',
+      type: 'text',
+      index: true,
+      unique: true,
+      admin: {
+        position: 'sidebar',
+      },
+      hooks: {
+        beforeValidate: [
+          ({ value, data }) => {
+            if (!value && data?.title) {
+              return data.title
+                .toLowerCase()
+                .replace(/ /g, '-')
+                .replace(/[^\w-]+/g, '')
+            }
+            return value
+          },
+        ],
+      },
+    },
   ],
 }

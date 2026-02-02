@@ -23,13 +23,16 @@
   },
   "dependencies": {
     "@payloadcms/admin-bar": "3.74.0",
+    "@payloadcms/db-vercel-postgres": "3.74.0",
     "@payloadcms/email-nodemailer": "3.74.0",
+    "@payloadcms/email-resend": "^3.74.0",
     "@payloadcms/live-preview-react": "3.74.0",
     "@payloadcms/next": "3.74.0",
     "@payloadcms/plugin-ecommerce": "3.74.0",
     "@payloadcms/plugin-form-builder": "3.74.0",
     "@payloadcms/plugin-seo": "3.74.0",
     "@payloadcms/richtext-lexical": "3.74.0",
+    "@payloadcms/storage-s3": "^3.74.0",
     "@payloadcms/translations": "3.74.0",
     "@payloadcms/ui": "3.74.0",
     "@radix-ui/react-accordion": "1.2.11",
@@ -62,8 +65,7 @@
     "sharp": "0.34.2",
     "sonner": "^1.7.2",
     "stripe": "18.5.0",
-    "tailwind-merge": "^3.4.0",
-    "@payloadcms/db-vercel-postgres": "3.74.0"
+    "tailwind-merge": "^3.4.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
@@ -101,7 +103,12 @@
   },
   "pnpm": {
     "onlyBuiltDependencies": [
-      "sharp"
+      "@vercel/git-hooks",
+      "bufferutil",
+      "esbuild",
+      "sharp",
+      "unrs-resolver",
+      "utf-8-validate"
     ]
   },
   "packageManager": "pnpm@10.28.2+sha512.41872f037ad22f7348e3b1debbaf7e867cfd448f2726d9cf74c08f19507c31d2c8e7a11525b983febc2df640b5438dee6023ebb1f84ed43cc2d654d2bc326264"

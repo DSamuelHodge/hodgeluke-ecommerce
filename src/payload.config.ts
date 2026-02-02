@@ -1,4 +1,5 @@
 import { vercelPostgresAdapter } from '@payloadcms/db-vercel-postgres'
+import { resendAdapter } from '@payloadcms/email-resend'
 import {
   BoldFeature,
   EXPERIMENTAL_TableFeature,
@@ -34,6 +35,9 @@ export default buildConfig({
       // The `BeforeDashboard` component renders the 'welcome' block that you see after logging into your admin panel.
       // Feel free to delete this at any time. Simply remove the line below and the import `BeforeDashboard` statement on line 15.
       beforeDashboard: ['@/components/BeforeDashboard#BeforeDashboard'],
+    },
+    importMap: {
+      baseDir: path.resolve(dirname),
     },
     user: Users.slug,
   },
@@ -78,7 +82,11 @@ export default buildConfig({
       ]
     },
   }),
-  //email: nodemailerAdapter(),
+  email: resendAdapter({
+    defaultFromAddress: 'onboarding@resend.dev',
+    defaultFromName: 'HodgeLuke',
+    apiKey: process.env.RESEND_API_KEY || '',
+  }),
   endpoints: [],
   globals: [Header, Footer],
   plugins,
