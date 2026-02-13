@@ -16,6 +16,111 @@ You are an expert Payload CMS developer. When working with Payload projects, fol
 - To validate typescript correctness after modifying code run `tsc --noEmit`
 - Generate import maps after creating or modifying components.
 
+## Agent GraphQL API
+
+### Endpoint
+
+**`/api/agent-graphql`** - Dedicated GraphQL endpoint for server-side agents
+
+This endpoint proxies to Payload's built-in GraphQL server (`/api/graphql`) and provides:
+- Auto-generated schemas for all collections (Users, Pages, Categories, Media, etc.)
+- Full introspection support (`__schema`, `__type` queries)
+- CRUD operations (queries and mutations)
+- Relationship resolution
+- Authentication & access control
+
+### Example Queries
+
+```graphql
+# Introspection - Get available types
+{
+  __schema {
+    types {
+      name
+      kind
+    }
+  }
+}
+
+# Query Pages collection
+{
+  Pages(limit: 10, where: { status: { equals: published } }) {
+    docs {
+      id
+      title
+      slug
+      createdAt
+    }
+    totalDocs
+    hasNextPage
+  }
+}
+
+# Query Categories
+{
+  Categories {
+    docs {
+      id
+      title
+    }
+  }
+}
+
+# Query with relationships
+{
+  Pages(limit: 5) {
+    docs {
+      id
+      title
+      hero {
+        ... on Media {
+          url
+          alt
+        }
+      }
+    }
+  }
+}
+```
+
+### Using the API
+
+```powershell
+# PowerShell example
+Invoke-RestMethod -Uri http://localhost:3000/api/agent-graphql `
+  -Method Post `
+  -Body '{"query": "{ Pages { docs { id title } } }"}' `
+  -ContentType "application/json"
+```
+
+```typescript
+// TypeScript/Node.js example
+const response = await fetch('http://localhost:3000/api/agent-graphql', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    query: `{
+      Pages(limit: 10) {
+        docs { id title slug }
+      }
+    }`
+  })
+})
+
+const data = await response.json()
+console.log(data.data.Pages.docs)
+```
+
+### Available Collections
+
+- `Users` - User accounts and authentication
+- `Pages` - Website pages
+- `Categories` - Content categories
+- `Media` - Uploaded media files
+
+See `.cursor/rules/queries.md` for query operators and patterns.
+
+
 ## Project Structure
 
 ```
