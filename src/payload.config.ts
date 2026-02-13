@@ -45,6 +45,11 @@ export default buildConfig({
   db: vercelPostgresAdapter({
     pool: {
       connectionString: process.env.POSTGRES_URL || '',
+      ssl: {
+        rejectUnauthorized: false, // Fix for "bad record mac" error
+      },
+      connectionTimeoutMillis: 30000, // 30 seconds
+      idleTimeoutMillis: 30000, // 30 seconds
     },
   }),
   editor: lexicalEditor({
